@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mi Perfil Emprendedor | Emprende Xtreme 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --azul:    #1B3A6B;
+    --naranja: #E8500A;
+    --verde:   #2E7D32;
+    --amarillo:#FFCC00;
+    --bg:      #F0F4FA;
+    --white:   #FFFFFF;
+    --gris:    #6B7280;
+    --line:    #CBD5E1;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: #1e293b; padding-bottom: 60px; }
+
+  .header { background: var(--azul); padding: 32px 40px 28px; position: relative; overflow: hidden; }
+  .header::before { content:'X'; font-family:'Bebas Neue',sans-serif; font-size:340px; color:rgba(255,255,255,0.04); position:absolute; right:-40px; top:-80px; line-height:1; pointer-events:none; }
+  .header-tag { font-family:'Space Mono',monospace; font-size:11px; color:var(--amarillo); letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
+  .header h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,6vw,60px); color:white; line-height:1; letter-spacing:2px; }
+  .header h1 span { color:var(--naranja); }
+  .header-sub { margin-top:10px; font-size:14px; color:rgba(255,255,255,0.65); }
+  .header-badges { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+  .badge { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:1.5px; padding:5px 12px; border-radius:4px; font-weight:700; text-transform:uppercase; }
+  .badge-a { background:rgba(255,255,255,0.1); color:#93C5FD; border:1px solid rgba(255,255,255,0.15); }
+  .badge-n { background:rgba(232,80,10,0.2); color:#FCA07A; border:1px solid rgba(232,80,10,0.3); }
+
+  .progress-wrap { background:var(--azul); padding:0 40px 24px; }
+  .progress-bar-bg { background:rgba(255,255,255,0.1); border-radius:99px; height:6px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:var(--naranja); border-radius:99px; transition:width .5s ease; width:0%; }
+  .progress-label { font-size:11px; color:rgba(255,255,255,0.5); margin-top:6px; font-family:'Space Mono',monospace; }
+
+  .container { max-width:760px; margin:0 auto; padding:40px 24px; display:flex; flex-direction:column; gap:28px; }
+
+  .card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,0.07); animation:fadeUp .4s ease both; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .card:nth-child(1){animation-delay:.05s} .card:nth-child(2){animation-delay:.12s}
+  .card:nth-child(3){animation-delay:.18s} .card:nth-child(4){animation-delay:.24s}
+  .card:nth-child(5){animation-delay:.30s} .card:nth-child(6){animation-delay:.36s}
+
+  .card-header { padding:18px 24px 14px; display:flex; align-items:center; gap:14px; border-bottom:1px solid var(--line); }
+  .card-icon { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .card-header-text { flex:1; }
+  .card-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px; }
+  .card-title { font-weight:700; font-size:16px; line-height:1.2; }
+  .card-body { padding:20px 24px; }
+
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:540px){.grid2{grid-template-columns:1fr;}}
+  .full { grid-column:1/-1; }
+
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .field label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--gris); }
+  .field input,.field textarea,.field select {
+    font-family:'DM Sans',sans-serif; font-size:15px; border:2px solid var(--line);
+    border-radius:10px; padding:10px 14px; background:#F8FAFC; color:#1e293b;
+    transition:border-color .2s,box-shadow .2s,background .2s; outline:none; resize:none;
+  }
+  .field input:focus,.field textarea:focus { border-color:var(--azul); background:white; box-shadow:0 0 0 3px rgba(27,58,107,0.1); }
+
+  .superpoder-item { display:flex; align-items:flex-start; gap:12px; margin-bottom:14px; }
+  .superpoder-num { font-family:'Bebas Neue',sans-serif; font-size:30px; line-height:1; color:var(--azul); opacity:.25; flex-shrink:0; width:28px; text-align:center; padding-top:6px; }
+  .superpoder-item input { font-family:'DM Sans',sans-serif; font-size:15px; border:none; border-bottom:2px solid var(--line); border-radius:0; padding:8px 4px; background:transparent; flex:1; outline:none; transition:border-color .2s; color:#1e293b; }
+  .superpoder-item input:focus { border-bottom-color:var(--azul); }
+
+  .miedo-wrap { background:#FFF7F4; border-radius:12px; border:1.5px solid #FCD0BC; padding:20px; display:flex; flex-direction:column; gap:14px; }
+  .miedo-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--naranja); }
+
+  .aporte-completer { background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:12px; padding:20px; margin-bottom:16px; }
+  .aporte-prompt { font-size:15px; color:var(--verde); font-weight:700; margin-bottom:12px; }
+  .aporte-prompt span { color:#1e293b; font-weight:400; font-style:italic; }
+
+  .problema-item { display:flex; align-items:flex-start; gap:12px; margin-bottom:12px; }
+  .problema-num { background:var(--azul); color:white; font-family:'Space Mono',monospace; font-size:11px; font-weight:700; width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:8px; }
+  .problema-item textarea { flex:1; font-family:'DM Sans',sans-serif; font-size:14px; border:2px solid var(--line); border-radius:10px; padding:10px 14px; background:#F8FAFC; resize:none; min-height:60px; outline:none; transition:border-color .2s,box-shadow .2s; color:#1e293b; }
+  .problema-item textarea:focus { border-color:var(--azul); background:white; box-shadow:0 0 0 3px rgba(27,58,107,0.08); }
+
+  .ayudar-box { background:var(--azul); border-radius:12px; padding:20px; margin-top:10px; }
+  .ayudar-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--amarillo); text-transform:uppercase; margin-bottom:10px; }
+  .ayudar-box textarea { width:100%; font-family:'DM Sans',sans-serif; font-size:14px; background:rgba(255,255,255,0.1); border:1.5px solid rgba(255,255,255,0.2); border-radius:8px; padding:10px 14px; color:white; resize:none; outline:none; min-height:72px; transition:border-color .2s,background .2s; }
+  .ayudar-box textarea::placeholder { color:rgba(255,255,255,0.35); }
+  .ayudar-box textarea:focus { border-color:var(--amarillo); background:rgba(255,255,255,0.15); }
+
+  /* ── SECCIÓN DE ENVÍO ── */
+  .save-section { display:flex; flex-direction:column; align-items:center; gap:16px; padding:32px 24px; background:white; border-radius:16px; box-shadow:0 2px 16px rgba(0,0,0,0.07); }
+  .save-btn { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:3px; padding:16px 48px; background:var(--naranja); color:white; border:none; border-radius:12px; cursor:pointer; transition:transform .15s,box-shadow .15s,background .15s; box-shadow:0 4px 18px rgba(232,80,10,0.35); }
+  .save-btn:hover { background:#C94308; transform:translateY(-2px); box-shadow:0 8px 24px rgba(232,80,10,0.45); }
+  .save-btn:disabled { background:#9CA3AF; box-shadow:none; cursor:not-allowed; transform:none; }
+  .print-btn { font-family:'DM Sans',sans-serif; font-size:14px; padding:10px 24px; border:2px solid var(--line); border-radius:8px; background:white; cursor:pointer; color:var(--gris); }
+  .save-hint { font-size:12px; color:var(--gris); text-align:center; line-height:1.5; }
+
+  /* ── SPINNER ── */
+  .spinner { width:22px; height:22px; border:3px solid rgba(255,255,255,.3); border-top-color:white; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* ── TOAST ── */
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(80px); padding:14px 28px; border-radius:50px; box-shadow:0 8px 30px rgba(0,0,0,0.2); transition:transform .4s cubic-bezier(.34,1.56,.64,1); z-index:999; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700; color:white; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+  .toast.success { background:#2E7D32; }
+  .toast.error   { background:#DC2626; }
+
+  /* ── AVISO URL ── */
+  .url-aviso { background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:12px; padding:16px 20px; font-size:13px; color:#92400E; line-height:1.6; }
+  .url-aviso strong { display:block; margin-bottom:4px; font-size:14px; }
+  .url-aviso code { background:#FEF3C7; padding:2px 6px; border-radius:4px; font-family:'Space Mono',monospace; font-size:12px; word-break:break-all; }
+
+  /* color helpers */
+  .ch-azul    { --cc:var(--azul);    --cb:#E3F0FF; }
+  .ch-naranja { --cc:var(--naranja); --cb:#FFF3E0; }
+  .ch-verde   { --cc:var(--verde);   --cb:#E8F5E9; }
+
+  .card-header.ch-azul    { background:#F0F6FF; }
+  .card-header.ch-naranja { background:#FFF7F4; }
+  .card-header.ch-verde   { background:#F0FDF4; }
+
+  .card-icon.ch-azul    { background:var(--azul);    color:white; }
+  .card-icon.ch-naranja { background:var(--naranja); color:white; }
+  .card-icon.ch-verde   { background:var(--verde);   color:white; }
+
+  .card-label.ch-azul    { color:var(--azul); }
+  .card-label.ch-naranja { color:var(--naranja); }
+  .card-label.ch-verde   { color:var(--verde); }
+
+  @media print { .save-section,.progress-wrap,.url-aviso{display:none;} .card{box-shadow:none;border:1px solid #e2e8f0;} }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">Emprende Xtreme 2026 · Cámara de Comercio de Casanare</div>
+  <h1>MI PERFIL<br><span>EMPRENDEDOR</span></h1>
+  <div class="header-sub">Módulo 1 · Mentalidad Emprendedora y Detección de Oportunidades · Última semana de marzo</div>
+  <div class="header-badges">
+    <span class="badge badge-a">📍 Modalidad Híbrida</span>
+    <span class="badge badge-n">⚡ Módulo 1 de 9</span>
+    <span class="badge badge-a">👥 16-25 años</span>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0% completado · 0 de 0 campos</div>
+</div>
+
+<div class="container">
+
+  <!-- AVISO URL -->
+  
+
+  <!-- DATOS BÁSICOS -->
+  <div class="card">
+    <div class="card-header ch-azul">
+      <div class="card-icon ch-azul">👤</div>
+      <div class="card-header-text">
+        <div class="card-label ch-azul">Sección 1</div>
+        <div class="card-title">Datos del Participante</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="field full"><label>Nombre completo *</label><input type="text" id="nombre" placeholder="Escribe tu nombre aquí..." data-track required/></div>
+        <div class="field"><label>Edad *</label><input type="number" id="edad" placeholder="Ej: 18" min="16" max="25" data-track required/></div>
+        <div class="field"><label>Ciudad o municipio *</label><input type="text" id="ciudad" placeholder="Ej: Yopal, Casanare" data-track required/></div>
+        <div class="field full"><label>Institución educativa o lugar de trabajo</label><input type="text" id="institucion" placeholder="Colegio, universidad, empresa..." data-track/></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPERPODERES -->
+  <div class="card">
+    <div class="card-header ch-naranja">
+      <div class="card-icon ch-naranja">⚡</div>
+      <div class="card-header-text">
+        <div class="card-label ch-naranja">Sección 2</div>
+        <div class="card-title">Mis 3 Superpoderes</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:14px;color:var(--gris);margin-bottom:20px;line-height:1.5;">
+        Escribe las <strong>3 habilidades</strong> que otros reconocen en ti. No tienen que ser perfectas.
+      </p>
+      <div class="superpoder-item"><div class="superpoder-num">1</div><input type="text" id="poder1" placeholder="Ej: Se me da bien hablar con la gente..." data-track/></div>
+      <div class="superpoder-item"><div class="superpoder-num">2</div><input type="text" id="poder2" placeholder="Ej: Soy creativo para resolver problemas..." data-track/></div>
+      <div class="superpoder-item"><div class="superpoder-num">3</div><input type="text" id="poder3" placeholder="Ej: Me gusta organizar y planear cosas..." data-track/></div>
+    </div>
+  </div>
+
+  <!-- MIEDO -->
+  <div class="card">
+    <div class="card-header ch-naranja">
+      <div class="card-icon ch-naranja">🔥</div>
+      <div class="card-header-text">
+        <div class="card-label ch-naranja">Sección 3</div>
+        <div class="card-title">Mi Mayor Miedo al Emprender</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:14px;color:var(--gris);margin-bottom:16px;line-height:1.5;">Nombrar el miedo es el primer paso para superarlo.</p>
+      <div class="miedo-wrap">
+        <div class="miedo-label">Mi miedo es...</div>
+        <textarea id="miedo" placeholder="Ej: Le tengo miedo a fracasar y que la gente piense mal de mí..." rows="3" data-track></textarea>
+        <div class="miedo-label">¿Qué podría hacer para enfrentar ese miedo?</div>
+        <textarea id="enfrentar" placeholder="Ej: Empezar con algo pequeño y contarle a alguien de confianza..." rows="3" data-track></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- APORTE -->
+  <div class="card">
+    <div class="card-header ch-verde">
+      <div class="card-icon ch-verde">🌱</div>
+      <div class="card-header-text">
+        <div class="card-label ch-verde">Sección 4</div>
+        <div class="card-title">Mi Aporte e Inspiración</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="aporte-completer">
+        <div class="aporte-prompt">Yo puedo aportar a un proyecto... <span>(completa la frase)</span></div>
+        <textarea id="aporte" placeholder="...mi energía para conectar con la gente y mis ideas creativas..." rows="3" data-track></textarea>
+      </div>
+      <div class="field"><label>Una persona que me inspira a emprender</label><input type="text" id="inspiracion" placeholder="¿Quién es? ¿Por qué te inspira?" data-track/></div>
+    </div>
+  </div>
+
+  <!-- PROBLEMAS -->
+  <div class="card">
+    <div class="card-header ch-azul">
+      <div class="card-icon ch-azul">🔍</div>
+      <div class="card-header-text">
+        <div class="card-label ch-azul">Sección 5</div>
+        <div class="card-title">5 Problemas de mi Entorno</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:14px;color:var(--gris);margin-bottom:18px;line-height:1.5;">Anota los <strong>5 problemas reales</strong> que observaste en tu barrio, colegio, familia o comunidad.</p>
+      <div class="problema-item"><div class="problema-num">1</div><textarea id="p1" placeholder="Ej: En mi barrio no hay donde comprar cosas saludables cerca del colegio..." data-track></textarea></div>
+      <div class="problema-item"><div class="problema-num">2</div><textarea id="p2" placeholder="Ej: Los adultos mayores no saben usar el celular para hacer trámites..." data-track></textarea></div>
+      <div class="problema-item"><div class="problema-num">3</div><textarea id="p3" placeholder="Ej: No hay actividades para jóvenes los fines de semana..." data-track></textarea></div>
+      <div class="problema-item"><div class="problema-num">4</div><textarea id="p4" placeholder="Describe otro problema que observaste..." data-track></textarea></div>
+      <div class="problema-item"><div class="problema-num">5</div><textarea id="p5" placeholder="Describe otro problema que observaste..." data-track></textarea></div>
+      <div class="ayudar-box">
+        <div class="ayudar-label">⭐ ¿A quién quiero ayudar con mi emprendimiento?</div>
+        <textarea id="ayudar" placeholder="Describe a esa persona: ¿Quién es? ¿Qué problema tiene? ¿Dónde vive?" data-track></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUARDAR -->
+  <div class="save-section">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--azul);">¿LISTO PARA ENVIAR?</div>
+    <p class="save-hint">Al presionar el botón tu perfil se guardará directamente<br>en la hoja de seguimiento del programa.</p>
+    <button class="save-btn" id="btnGuardar" onclick="enviarDatos()">ENVIAR MI PERFIL 🚀</button>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+    <p class="save-hint" style="font-size:11px;color:#CBD5E1;">Campos con * son obligatorios</p>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ════════════════════════════════════════════════════════
+  //  ⚠️  REEMPLAZA ESTA URL CON LA DE TU APPS SCRIPT
+  //  Sigue el instructivo Word para obtenerla (5 minutos)
+  // ════════════════════════════════════════════════════════
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBMK309PLIJ4HLp5HEP7YtxU8w-_qalWuH4ki8sClZIjMpSgtl472WG4M4Ho97Ddk/exec";
+
+  const CAMPOS = ['nombre','edad','ciudad','institucion','poder1','poder2','poder3',
+                  'miedo','enfrentar','aporte','inspiracion','p1','p2','p3','p4','p5','ayudar'];
+
+  // ── Progreso ──────────────────────────────────────────
+  function updateProgress() {
+    const filled = CAMPOS.filter(id => {
+      const el = document.getElementById(id);
+      return el && el.value && el.value.trim().length > 1;
+    }).length;
+    const pct = Math.round((filled / CAMPOS.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent =
+      `${pct}% completado · ${filled} de ${CAMPOS.length} campos`;
+  }
+
+  // ── Validación básica ─────────────────────────────────
+  function validar() {
+    const obligatorios = ['nombre','edad','ciudad'];
+    for (const id of obligatorios) {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        mostrarToast('⚠️ Completa tu nombre, edad y ciudad antes de enviar', 'error');
+        el.focus();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // ── Envío a Google Sheets ─────────────────────────────
+  async function enviarDatos() {
+    if (!validar()) return;
+
+    const btn = document.getElementById('btnGuardar');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Enviando...';
+
+    // Recoger todos los datos
+    const datos = { modulo: "Módulo 1 — Mi Perfil Emprendedor", timestamp: new Date().toLocaleString('es-CO') };
+    CAMPOS.forEach(id => {
+      const el = document.getElementById(id);
+      datos[id] = el ? el.value.trim() : '';
+    });
+
+    // Verificar si la URL fue configurada
+    if (APPS_SCRIPT_URL === "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT") {
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = 'ENVIAR MI PERFIL 🚀';
+        mostrarToast('⚙️ URL no configurada aún. Sigue el instructivo.', 'error');
+      }, 800);
+      return;
+    }
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+      // no-cors no devuelve respuesta legible, asumimos éxito si no hay error
+      btn.innerHTML = '✅ ¡Enviado!';
+      btn.style.background = '#2E7D32';
+      mostrarToast('✅ ¡Perfil enviado exitosamente! Ya puedes cerrar esta ventana.', 'success');
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = 'ENVIAR MI PERFIL 🚀';
+      mostrarToast('❌ Error de conexión. Verifica tu internet e intenta de nuevo.', 'error');
+    }
+  }
+
+  // ── Toast ─────────────────────────────────────────────
+  function mostrarToast(msg, tipo='success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${tipo} show`;
+    setTimeout(() => t.classList.remove('show'), 4500);
+  }
+
+  // ── Eventos ───────────────────────────────────────────
+  CAMPOS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.addEventListener('input', updateProgress); }
+  });
+  updateProgress();
+</script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mi Idea con Impacto | Emprende Xtreme 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root { --verde:#2E7D32; --azul:#1B3A6B; --naranja:#E8500A; --morado:#6B21A8; --amarillo:#FFCC00; --bg:#F0F7F0; --white:#FFFFFF; --gris:#6B7280; --line:#CBD5E1; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:#1e293b;padding-bottom:60px;}
+
+  .header{background:var(--verde);padding:32px 40px 28px;position:relative;overflow:hidden;}
+  .header::before{content:'2';font-family:'Bebas Neue',sans-serif;font-size:400px;color:rgba(255,255,255,0.04);position:absolute;right:-20px;top:-100px;line-height:1;pointer-events:none;}
+  .header-tag{font-family:'Space Mono',monospace;font-size:11px;color:var(--amarillo);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+  .header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,6vw,58px);color:white;line-height:1;letter-spacing:2px;}
+  .header h1 span{color:var(--amarillo);}
+  .header-sub{margin-top:10px;font-size:14px;color:rgba(255,255,255,0.65);}
+  .header-badges{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .badge{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;padding:5px 12px;border-radius:4px;font-weight:700;text-transform:uppercase;}
+  .badge-v{background:rgba(255,255,255,0.1);color:#A7F3D0;border:1px solid rgba(255,255,255,0.2);}
+  .badge-n{background:rgba(255,204,0,0.15);color:var(--amarillo);border:1px solid rgba(255,204,0,0.3);}
+
+  .progress-wrap{background:var(--verde);padding:0 40px 24px;}
+  .progress-bar-bg{background:rgba(255,255,255,0.15);border-radius:99px;height:6px;overflow:hidden;}
+  .progress-bar-fill{height:100%;background:var(--amarillo);border-radius:99px;transition:width .4s ease;width:0%;}
+  .progress-label{font-size:11px;color:rgba(255,255,255,0.5);margin-top:6px;font-family:'Space Mono',monospace;}
+
+  .container{max-width:760px;margin:0 auto;padding:40px 24px;display:flex;flex-direction:column;gap:28px;}
+  .card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.07);animation:fadeUp .4s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.12s}
+  .card:nth-child(3){animation-delay:.18s}.card:nth-child(4){animation-delay:.24s}
+  .card:nth-child(5){animation-delay:.30s}.card:nth-child(6){animation-delay:.36s}.card:nth-child(7){animation-delay:.42s}
+
+  .card-header{padding:18px 24px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);}
+  .card-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .card-header-text{flex:1;}
+  .card-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px;}
+  .card-title{font-weight:700;font-size:16px;line-height:1.2;}
+  .card-body{padding:20px 24px;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:540px){.grid2{grid-template-columns:1fr;}}
+  .full{grid-column:1/-1;}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+  .field label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gris);}
+  .field input,.field textarea{font-family:'DM Sans',sans-serif;font-size:15px;border:2px solid var(--line);border-radius:10px;padding:10px 14px;background:#F8FAF8;color:#1e293b;transition:border-color .2s,box-shadow .2s;outline:none;resize:none;}
+  .field input:focus,.field textarea:focus{border-color:var(--verde);background:white;box-shadow:0 0 0 3px rgba(46,125,50,0.1);}
+
+  .impacto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+  @media(max-width:540px){.impacto-grid{grid-template-columns:1fr;}}
+  .impacto-card{border:2px solid var(--line);border-radius:12px;padding:16px 14px;text-align:center;cursor:pointer;transition:all .2s;background:#F8FAF8;}
+  .impacto-card:hover{border-color:var(--verde);background:#F0FDF4;}
+  .impacto-card.selected{border-color:var(--verde);background:#E8F5E9;box-shadow:0 0 0 3px rgba(46,125,50,0.15);}
+  .impacto-icon{font-size:28px;margin-bottom:8px;}
+  .ic-label{font-weight:700;font-size:14px;color:#374151;}
+  .impacto-card.selected .ic-label{color:var(--verde);}
+  .ic-desc{font-size:12px;color:var(--gris);margin-top:4px;}
+  .impacto-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);margin:8px auto 0;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+  .impacto-card.selected .impacto-check{background:var(--verde);border-color:var(--verde);color:white;font-size:12px;}
+
+  .frase-box{background:var(--verde);border-radius:14px;padding:22px;}
+  .frase-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amarillo);text-transform:uppercase;margin-bottom:14px;}
+  .frase-constructor{display:flex;flex-wrap:wrap;gap:6px;align-items:center;line-height:2.2;font-size:15px;color:white;font-weight:500;}
+  .frase-input{font-family:'DM Sans',sans-serif;font-size:14px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 12px;color:white;outline:none;transition:border-color .2s;min-width:120px;}
+  .frase-input::placeholder{color:rgba(255,255,255,0.4);font-style:italic;}
+  .frase-input:focus{border-color:var(--amarillo);background:rgba(255,255,255,0.2);}
+  .frase-preview{margin-top:18px;padding:14px;background:rgba(255,255,255,0.1);border-radius:10px;font-size:13px;color:rgba(255,255,255,0.8);font-style:italic;display:none;}
+
+  .retro-box{background:#F5F3FF;border:1.5px solid #C4B5FD;border-radius:12px;padding:20px;}
+  .retro-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--morado);margin-bottom:12px;}
+
+  .url-aviso{background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:12px;padding:16px 20px;font-size:13px;color:#92400E;line-height:1.6;}
+  .url-aviso strong{display:block;margin-bottom:4px;font-size:14px;}
+  .url-aviso code{background:#FEF3C7;padding:2px 6px;border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;word-break:break-all;}
+
+  .save-section{display:flex;flex-direction:column;align-items:center;gap:16px;padding:32px 24px;background:white;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.07);}
+  .save-btn{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:16px 48px;background:var(--verde);color:white;border:none;border-radius:12px;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 18px rgba(46,125,50,0.35);}
+  .save-btn:hover{background:#1B5E20;transform:translateY(-2px);}
+  .save-btn:disabled{background:#9CA3AF;box-shadow:none;cursor:not-allowed;transform:none;}
+  .print-btn{font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 24px;border:2px solid var(--line);border-radius:8px;background:white;cursor:pointer;color:var(--gris);}
+  .save-hint{font-size:12px;color:var(--gris);text-align:center;line-height:1.5;}
+  .spinner{width:22px;height:22px;border:3px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);padding:14px 28px;border-radius:50px;box-shadow:0 8px 30px rgba(0,0,0,0.2);transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:999;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:white;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .toast.success{background:#2E7D32;} .toast.error{background:#DC2626;}
+
+  .ch-verde{} .ch-azul{} .ch-naranja{} .ch-morado{}
+  .card-header.ch-verde{background:#F0FDF4;} .card-header.ch-azul{background:#EFF6FF;}
+  .card-header.ch-naranja{background:#FFF7F4;} .card-header.ch-morado{background:#FAF5FF;}
+  .card-icon.ch-verde{background:var(--verde);color:white;} .card-icon.ch-azul{background:var(--azul);color:white;}
+  .card-icon.ch-naranja{background:var(--naranja);color:white;} .card-icon.ch-morado{background:var(--morado);color:white;}
+  .card-label.ch-verde{color:var(--verde);} .card-label.ch-azul{color:var(--azul);}
+  .card-label.ch-naranja{color:var(--naranja);} .card-label.ch-morado{color:var(--morado);}
+
+  @media print{.save-section,.progress-wrap,.url-aviso{display:none;}.card{box-shadow:none;border:1px solid #e2e8f0;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">Emprende Xtreme 2026 · Cámara de Comercio de Casanare</div>
+  <h1>MI IDEA<br><span>CON IMPACTO</span></h1>
+  <div class="header-sub">Módulo 2 · Emprender con Propósito y Sostenibilidad · Segunda semana de abril</div>
+  <div class="header-badges">
+    <span class="badge badge-v">🌱 Módulo 2 de 9</span>
+    <span class="badge badge-n">⚡ ABRIL — Base de la idea</span>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0% completado</div>
+</div>
+
+<div class="container">
+
+  <div class="url-aviso" id="avisoUrl">
+    <strong>⚙️ Configuración pendiente — solo para el administrador</strong>
+    Reemplaza <code>PEGA_AQUI_TU_URL_DE_APPS_SCRIPT</code> con la URL de tu Google Apps Script. Sigue el instructivo Word incluido. Una vez configurado, elimina este bloque.
+  </div>
+
+  <!-- DATOS -->
+  <div class="card">
+    <div class="card-header ch-verde">
+      <div class="card-icon ch-verde">👤</div>
+      <div class="card-header-text">
+        <div class="card-label ch-verde">Sección 1</div>
+        <div class="card-title">Datos del Participante</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="field full"><label>Nombre completo *</label><input type="text" id="nombre" placeholder="Tu nombre completo..." data-track required/></div>
+        <div class="field"><label>Equipo</label><input type="text" id="equipo" placeholder="Nombre del equipo..." data-track/></div>
+        <div class="field"><label>Fecha</label><input type="date" id="fecha" data-track/></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROBLEMA Y SOLUCIÓN -->
+  <div class="card">
+    <div class="card-header ch-azul">
+      <div class="card-icon ch-azul">🔍</div>
+      <div class="card-header-text">
+        <div class="card-label ch-azul">Sección 2 — Del Módulo 1</div>
+        <div class="card-title">Mi Problema y Mi Solución</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:14px;color:var(--gris);margin-bottom:18px;line-height:1.5;">Retoma el trabajo del Módulo 1.</p>
+      <div class="field"><label>El problema que identifiqué es...</label><textarea id="problema" rows="2" placeholder="Ej: En mi barrio no hay un lugar donde los adultos mayores puedan aprender a usar el celular..." data-track></textarea></div>
+      <div class="field"><label>Mi idea o solución es...</label><textarea id="solucion" rows="2" placeholder="Ej: Talleres sencillos de tecnología para adultos mayores en el salón comunal..." data-track></textarea></div>
+      <div class="field"><label>La persona que sufre este problema es...</label><input type="text" id="persona" placeholder="Ej: Adultos mayores de 60+ años de mi barrio..." data-track/></div>
+    </div>
+  </div>
+
+  <!-- BENEFICIO PARA OTROS -->
+  <div class="card">
+    <div class="card-header ch-verde">
+      <div class="card-icon ch-verde">🤝</div>
+      <div class="card-header-text">
+        <div class="card-label ch-verde">Sección 3</div>
+        <div class="card-title">¿A Quién Beneficia mi Idea Además de a Mí?</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field"><label>Mi solución también beneficia a...</label><textarea id="beneficia" rows="2" placeholder="Ej: A sus familias, que ya no tienen que ayudarlos con cada trámite..." data-track></textarea></div>
+      <div class="field"><label>Lo que cambiaría en su vida si mi idea existiera...</label><textarea id="cambio" rows="3" placeholder="Ej: Podrían hacer sus trámites solos, sentirían más independencia..." data-track></textarea></div>
+    </div>
+  </div>
+
+  <!-- TIPO DE IMPACTO -->
+  <div class="card">
+    <div class="card-header ch-verde">
+      <div class="card-icon ch-verde">🌍</div>
+      <div class="card-header-text">
+        <div class="card-label ch-verde">Sección 4</div>
+        <div class="card-title">Tipo de Impacto</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:14px;color:var(--gris);margin-bottom:18px;line-height:1.5;">Selecciona el tipo de impacto. Puedes marcar más de uno.</p>
+      <div class="impacto-grid">
+        <div class="impacto-card" id="imp-social" onclick="toggleImpacto('social')">
+          <div class="impacto-icon">🧑‍🤝‍🧑</div>
+          <div class="ic-label">Social</div>
+          <div class="ic-desc">Ayuda directamente a personas o comunidades</div>
+          <div class="impacto-check" id="check-social"></div>
+        </div>
+        <div class="impacto-card" id="imp-ambiental" onclick="toggleImpacto('ambiental')">
+          <div class="impacto-icon">🌿</div>
+          <div class="ic-label">Ambiental</div>
+          <div class="ic-desc">Cuida o mejora el entorno natural</div>
+          <div class="impacto-check" id="check-ambiental"></div>
+        </div>
+        <div class="impacto-card" id="imp-economico" onclick="toggleImpacto('economico')">
+          <div class="impacto-icon">💼</div>
+          <div class="ic-label">Económico Local</div>
+          <div class="ic-desc">Genera trabajo o activa la economía del municipio</div>
+          <div class="impacto-check" id="check-economico"></div>
+        </div>
+      </div>
+      <div class="field"><label>Mi idea podría beneficiar directamente a...</label><input type="text" id="alcance" placeholder="Ej: 30 adultos mayores de mi barrio en el primer mes..." data-track/></div>
+      <div class="field"><label>Si mi idea existiera, en mi comunidad cambiaría...</label><textarea id="comunidad" rows="2" placeholder="Ej: Los adultos mayores serían más autónomos..." data-track></textarea></div>
+    </div>
+  </div>
+
+  <!-- RETROALIMENTACIÓN -->
+  <div class="card">
+    <div class="card-header ch-morado">
+      <div class="card-icon ch-morado">💬</div>
+      <div class="card-header-text">
+        <div class="card-label ch-morado">Sección 5 — Después de la presentación</div>
+        <div class="card-title">Sugerencia más Valiosa que Recibí</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="retro-box">
+        <div class="retro-label">La sugerencia que más me sirve es...</div>
+        <div class="field"><textarea id="sugerencia" rows="2" placeholder="Ej: Mis compañeros sugirieron agregar pagos digitales..." data-track></textarea></div>
+        <div class="retro-label" style="margin-top:16px;">Cómo la voy a incorporar...</div>
+        <div class="field"><textarea id="incorporar" rows="2" placeholder="Ej: Voy a agregar un módulo de pagos como nivel avanzado..." data-track></textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRASE DE IMPACTO -->
+  <div class="card">
+    <div class="card-header ch-verde">
+      <div class="card-icon ch-verde">⭐</div>
+      <div class="card-header-text">
+        <div class="card-label ch-verde">Sección 6</div>
+        <div class="card-title">Mi Frase de Impacto</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="frase-box">
+        <div class="frase-label">✍ Construye tu frase de impacto</div>
+        <div class="frase-constructor">
+          <span>Mi emprendimiento ayuda a</span>
+          <input class="frase-input" id="frase1" placeholder="¿a quién?" style="width:130px;" data-track/>
+          <span>a resolver</span>
+          <input class="frase-input" id="frase2" placeholder="¿qué problema?" style="width:160px;" data-track/>
+          <span>para que puedan</span>
+          <input class="frase-input" id="frase3" placeholder="¿lograr qué?" style="width:160px;" data-track/>
+        </div>
+        <div class="frase-preview" id="frasePreview"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUARDAR -->
+  <div class="save-section">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--verde);">¿LISTO PARA ENVIAR?</div>
+    <p class="save-hint">Al presionar el botón tu idea se guardará directamente<br>en la hoja de seguimiento del programa.</p>
+    <button class="save-btn" id="btnGuardar" onclick="enviarDatos()">ENVIAR MI IDEA 🌱</button>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+  const APPS_SCRIPT_URL = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT";
+
+  const CAMPOS = ['nombre','equipo','fecha','problema','solucion','persona',
+                  'beneficia','cambio','alcance','comunidad','sugerencia',
+                  'incorporar','frase1','frase2','frase3'];
+  const impactos = new Set();
+
+  function toggleImpacto(tipo) {
+    const card = document.getElementById('imp-'+tipo);
+    const check = document.getElementById('check-'+tipo);
+    if (impactos.has(tipo)) { impactos.delete(tipo); card.classList.remove('selected'); check.textContent=''; }
+    else { impactos.add(tipo); card.classList.add('selected'); check.textContent='✓'; }
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const filled = CAMPOS.filter(id=>{ const e=document.getElementById(id); return e&&e.value&&e.value.trim().length>1; }).length + (impactos.size>0?1:0);
+    const total = CAMPOS.length + 1;
+    const pct = Math.round((filled/total)*100);
+    document.getElementById('progressFill').style.width = pct+'%';
+    document.getElementById('progressLabel').textContent = `${pct}% completado · ${filled} de ${total} campos`;
+    // Preview frase
+    const f1=document.getElementById('frase1').value.trim();
+    const f2=document.getElementById('frase2').value.trim();
+    const f3=document.getElementById('frase3').value.trim();
+    const prev=document.getElementById('frasePreview');
+    if(f1||f2||f3){ prev.style.display='block'; prev.textContent=`"Mi emprendimiento ayuda a ${f1||'...'} a resolver ${f2||'...'} para que puedan ${f3||'...'}."`; }
+    else prev.style.display='none';
+  }
+
+  async function enviarDatos() {
+    const nombre = document.getElementById('nombre').value.trim();
+    if (!nombre) { mostrarToast('⚠️ Escribe tu nombre antes de enviar', 'error'); return; }
+
+    const btn = document.getElementById('btnGuardar');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Enviando...';
+
+    const datos = { modulo:"Módulo 2 — Mi Idea con Impacto", timestamp:new Date().toLocaleString('es-CO'), impactos:[...impactos].join(', ') };
+    CAMPOS.forEach(id=>{ const e=document.getElementById(id); datos[id]=e?e.value.trim():''; });
+
+    if (APPS_SCRIPT_URL === "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT") {
+      setTimeout(()=>{ btn.disabled=false; btn.innerHTML='ENVIAR MI IDEA 🌱'; mostrarToast('⚙️ URL no configurada aún. Sigue el instructivo.','error'); },800);
+      return;
+    }
+
+    try {
+      await fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(datos) });
+      btn.innerHTML = '✅ ¡Enviado!';
+      btn.style.background = '#1B5E20';
+      mostrarToast('✅ ¡Idea enviada exitosamente! Ya puedes cerrar esta ventana.','success');
+    } catch(err) {
+      btn.disabled=false; btn.innerHTML='ENVIAR MI IDEA 🌱';
+      mostrarToast('❌ Error de conexión. Verifica tu internet e intenta de nuevo.','error');
+    }
+  }
+
+  function mostrarToast(msg,tipo='success'){
+    const t=document.getElementById('toast'); t.textContent=msg; t.className=`toast ${tipo} show`;
+    setTimeout(()=>t.classList.remove('show'),4500);
+  }
+
+  CAMPOS.forEach(id=>{ const e=document.getElementById(id); if(e)e.addEventListener('input',updateProgress); });
+  updateProgress();
+</script>
+</body>
+</html>
