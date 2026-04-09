@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Reto 2 — Mapa de Impacto | Emprende Xtreme 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{--azul:#1B3A6B;--naranja:#E8500A;--verde:#2E7D32;--morado:#5B21B6;--amarillo:#FFCC00;--bg:#F0F7F0;--line:#CBD5E1;--gris:#6B7280;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:#1e293b;padding-bottom:60px;}
+  .header{background:var(--verde);padding:28px 32px 24px;position:relative;overflow:hidden;}
+  .header::before{content:'🌱';font-size:280px;color:rgba(255,255,255,0.04);position:absolute;right:-40px;top:-60px;line-height:1;pointer-events:none;}
+  .header-tag{font-family:'Space Mono',monospace;font-size:11px;color:var(--amarillo);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
+  .header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,6vw,52px);color:white;line-height:1;letter-spacing:2px;}
+  .header h1 span{color:var(--amarillo);}
+  .header-sub{margin-top:8px;font-size:13px;color:rgba(255,255,255,0.6);}
+  .badges{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .badge{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;padding:4px 10px;border-radius:4px;font-weight:700;text-transform:uppercase;}
+  .bv{background:rgba(255,255,255,0.1);color:#A7F3D0;border:1px solid rgba(255,255,255,0.2);}
+  .ba{background:rgba(255,204,0,0.15);color:var(--amarillo);border:1px solid rgba(255,204,0,0.3);}
+  .progress-wrap{background:var(--verde);padding:0 32px 20px;}
+  .progress-bar-bg{background:rgba(255,255,255,0.15);border-radius:99px;height:5px;overflow:hidden;}
+  .progress-bar-fill{height:100%;background:var(--amarillo);border-radius:99px;transition:width .4s ease;width:0%;}
+  .progress-label{font-size:11px;color:rgba(255,255,255,0.5);margin-top:5px;font-family:'Space Mono',monospace;}
+  .container{max-width:720px;margin:0 auto;padding:32px 20px;display:flex;flex-direction:column;gap:24px;}
+  .card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,0.07);animation:fadeUp .4s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.10s}
+  .card:nth-child(3){animation-delay:.15s}.card:nth-child(4){animation-delay:.20s}
+  .card:nth-child(5){animation-delay:.25s}.card:nth-child(6){animation-delay:.30s}
+  .card-header{padding:16px 22px 12px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);}
+  .card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .card-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px;}
+  .card-title{font-weight:700;font-size:15px;}
+  .card-body{padding:18px 22px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:500px){.grid2{grid-template-columns:1fr;}}
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+  .field label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gris);}
+  .field input,.field textarea,.field select{font-family:'DM Sans',sans-serif;font-size:15px;border:2px solid var(--line);border-radius:10px;padding:10px 13px;background:#F8FAFC;color:#1e293b;transition:border-color .2s,box-shadow .2s;outline:none;resize:none;}
+  .field input:focus,.field textarea:focus{border-color:var(--verde);background:white;box-shadow:0 0 0 3px rgba(46,125,50,0.1);}
+
+  /* Impacto cards */
+  .impacto-grid{display:flex;flex-direction:column;gap:16px;}
+  .impacto-card{border-radius:12px;padding:16px 18px;border:2px solid;}
+  .impacto-card.social{background:#E8F5E9;border-color:#2E7D32;}
+  .impacto-card.ambiental{background:#E3F2FD;border-color:#1565C0;}
+  .impacto-card.economico{background:#FFF3E0;border-color:#E8500A;}
+  .impacto-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .impacto-card.social .impacto-label{color:#2E7D32;}
+  .impacto-card.ambiental .impacto-label{color:#1565C0;}
+  .impacto-card.economico .impacto-label{color:#E8500A;}
+  .impacto-hint{font-size:12px;color:var(--gris);margin-bottom:10px;font-style:italic;}
+  .impacto-card textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;border:2px solid var(--line);border-radius:8px;padding:10px 12px;background:rgba(255,255,255,0.7);resize:none;min-height:64px;outline:none;transition:border-color .2s;}
+  .impacto-card.social textarea:focus{border-color:#2E7D32;}
+  .impacto-card.ambiental textarea:focus{border-color:#1565C0;}
+  .impacto-card.economico textarea:focus{border-color:#E8500A;}
+
+  /* Impacto más fuerte selector */
+  .selector-box{background:var(--verde);border-radius:12px;padding:16px 18px;margin-top:8px;}
+  .sel-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amarillo);text-transform:uppercase;margin-bottom:10px;}
+  .selector-box select{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.3);border-radius:8px;padding:9px 12px;color:white;outline:none;}
+  .selector-box select option{background:#2E7D32;color:white;}
+
+  /* Cambios en Yopal */
+  .cambio-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+  .cambio-num{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;color:var(--verde);opacity:.25;width:24px;text-align:center;flex-shrink:0;padding-top:8px;}
+  .cambio-input{font-family:'DM Sans',sans-serif;font-size:14px;border:2px solid var(--line);border-radius:10px;padding:9px 12px;background:#F8FAFC;flex:1;outline:none;transition:border-color .2s;color:#1e293b;resize:none;min-height:54px;}
+  .cambio-input:focus{border-color:var(--verde);background:white;}
+
+  /* IA box */
+  .ia-box{background:#1E1E2E;border-radius:12px;padding:18px;}
+  .ia-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:#A8FF78;text-transform:uppercase;margin-bottom:10px;}
+  .ia-prompt{background:rgba(168,255,120,0.07);border:1px solid rgba(168,255,120,0.18);border-radius:8px;padding:12px;margin-bottom:12px;font-family:'Space Mono',monospace;font-size:11px;color:#A8FF78;line-height:1.7;}
+  .ia-prompt .ph{color:rgba(168,255,120,0.35);font-style:italic;}
+  .ia-textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:10px 12px;color:white;resize:none;min-height:70px;outline:none;}
+  .ia-textarea::placeholder{color:rgba(255,255,255,0.3);font-style:italic;}
+
+  /* Frase de impacto */
+  .frase-box{background:var(--verde);border-radius:12px;padding:18px;}
+  .frase-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amarillo);text-transform:uppercase;margin-bottom:12px;}
+  .frase-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;color:white;font-weight:500;line-height:2.4;}
+  .frase-input{font-family:'DM Sans',sans-serif;font-size:13px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);border-radius:7px;padding:5px 10px;color:white;outline:none;}
+  .frase-input::placeholder{color:rgba(255,255,255,0.35);font-style:italic;}
+  .frase-preview{margin-top:14px;padding:12px;background:rgba(255,255,255,0.08);border-radius:8px;font-size:13px;color:rgba(255,255,255,0.75);font-style:italic;display:none;}
+
+  /* color helpers */
+  .ch-verde .card-icon{background:var(--verde);color:white;} .ch-verde .card-header{background:#F0FDF4;} .ch-verde .card-label{color:var(--verde);}
+  .ch-azul .card-icon{background:var(--azul);color:white;} .ch-azul .card-header{background:#EFF6FF;} .ch-azul .card-label{color:var(--azul);}
+  .ch-naranja .card-icon{background:var(--naranja);color:white;} .ch-naranja .card-header{background:#FFF7F4;} .ch-naranja .card-label{color:var(--naranja);}
+  .ch-morado .card-icon{background:var(--morado);color:white;} .ch-morado .card-header{background:#FAF5FF;} .ch-morado .card-label{color:var(--morado);}
+
+  .save-section{display:flex;flex-direction:column;align-items:center;gap:14px;padding:28px 22px;background:white;border-radius:16px;box-shadow:0 2px 14px rgba(0,0,0,0.07);}
+  .save-btn{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:3px;padding:14px 44px;background:var(--verde);color:white;border:none;border-radius:12px;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(46,125,50,0.35);}
+  .save-btn:hover{background:#1B5E20;transform:translateY(-2px);}
+  .save-btn:disabled{background:#9CA3AF;box-shadow:none;transform:none;cursor:not-allowed;}
+  .print-btn{font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 22px;border:2px solid var(--line);border-radius:8px;background:white;cursor:pointer;color:var(--gris);}
+  .spinner{width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);padding:13px 26px;border-radius:50px;box-shadow:0 6px 24px rgba(0,0,0,0.2);transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:999;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:white;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .toast.success{background:#2E7D32;} .toast.error{background:#DC2626;}
+  @media print{.save-section,.progress-wrap{display:none;}.card{box-shadow:none;border:1px solid #e2e8f0;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">Emprende Xtreme 2026 · Cámara de Comercio de Casanare · Centro Social</div>
+  <h1>RETO 2 — <span>MAPA DE IMPACTO</span></h1>
+  <div class="header-sub">Emprender con Propósito y Sostenibilidad · Viernes 10 de abril · 8:00–10:00 am</div>
+  <div class="badges">
+    <span class="badge bv">🧑‍🤝‍🧑 Impacto Social</span>
+    <span class="badge bv">🌿 Impacto Ambiental</span>
+    <span class="badge ba">💼 Impacto Económico</span>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0% completado</div>
+</div>
+
+<div class="container">
+
+  <!-- DATOS DEL EQUIPO -->
+  <div class="card ch-verde">
+    <div class="card-header">
+      <div class="card-icon">👥</div>
+      <div><div class="card-label">Sección 1</div><div class="card-title">Datos del Equipo</div></div>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="field" style="grid-column:1/-1"><label>Nombre del equipo *</label><input type="text" id="equipo" placeholder="Su equipo..." data-track required/></div>
+        <div class="field"><label>Líder del equipo *</label><input type="text" id="lider" placeholder="Nombre completo..." data-track required/></div>
+        <div class="field"><label>Fecha</label><input type="date" id="fecha" data-track/></div>
+      </div>
+      <div class="field"><label>Idea de negocio (del Reto 1)</label><textarea id="idea_r1" rows="2" placeholder="Resumen de su idea del Reto 1..." data-track></textarea></div>
+      <div class="field"><label>POR QUÉ del equipo (Golden Circle)</label><textarea id="porque_r1" rows="2" placeholder="Su propósito del Reto 1..." data-track></textarea></div>
+    </div>
+  </div>
+
+  <!-- MAPA DE IMPACTO -->
+  <div class="card ch-verde">
+    <div class="card-header">
+      <div class="card-icon">🗺️</div>
+      <div><div class="card-label">Sección 2 — Desafío Xtreme #2</div><div class="card-title">Mapa de Impacto — Los 3 Tipos</div></div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.5;">Describan cómo su idea genera impacto en las <strong>3 dimensiones</strong>. Partan siempre desde su POR QUÉ del Reto 1.</p>
+      <div class="impacto-grid">
+
+        <div class="impacto-card social">
+          <div class="impacto-label">🧑‍🤝‍🧑 IMPACTO SOCIAL</div>
+          <div class="impacto-hint">¿A quién beneficia su idea más allá de sus clientes? ¿Qué problema humano resuelve?</div>
+          <textarea id="impacto_social" rows="3" placeholder="Ej: Beneficia a adultos mayores del barrio que no pueden hacer trámites solos, dándoles autonomía digital..." data-track></textarea>
+        </div>
+
+        <div class="impacto-card ambiental">
+          <div class="impacto-label">🌿 IMPACTO AMBIENTAL</div>
+          <div class="impacto-hint">¿Su idea cuida el entorno? ¿Pueden agregar una práctica sostenible aunque no sea el foco principal?</div>
+          <textarea id="impacto_ambiental" rows="3" placeholder="Ej: Usamos materiales reciclables en nuestros empaques y compramos insumos a proveedores locales para reducir el transporte..." data-track></textarea>
+        </div>
+
+        <div class="impacto-card economico">
+          <div class="impacto-label">💼 IMPACTO ECONÓMICO LOCAL</div>
+          <div class="impacto-hint">¿Genera empleo en Yopal? ¿Activa otros negocios del barrio? ¿Compra a proveedores locales?</div>
+          <textarea id="impacto_economico" rows="3" placeholder="Ej: Generamos empleo para 2 jóvenes del barrio y compramos materiales a 3 tiendas locales de Yopal..." data-track></textarea>
+        </div>
+
+      </div>
+
+      <div class="selector-box" style="margin-top:16px;">
+        <div class="sel-label">⭐ ¿Cuál es el impacto más fuerte de su idea?</div>
+        <select id="impacto_principal" data-track>
+          <option value="">— Selecciona el tipo de impacto más fuerte —</option>
+          <option value="social">🧑‍🤝‍🧑 Impacto Social</option>
+          <option value="ambiental">🌿 Impacto Ambiental</option>
+          <option value="economico">💼 Impacto Económico Local</option>
+          <option value="todos_igual">Los 3 tienen igual peso</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAMBIOS EN YOPAL -->
+  <div class="card ch-azul">
+    <div class="card-header">
+      <div class="card-icon">🏙️</div>
+      <div><div class="card-label">Sección 3</div><div class="card-title">¿Qué Cambia en Yopal en 1 Año?</div></div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:13px;color:var(--gris);margin-bottom:14px;line-height:1.5;">Si su idea existe y funciona, ¿qué cambios concretos verían en Yopal en 1 año? Sean específicos — no "mejora la vida" sino cuántas personas, en qué barrio, de qué forma.</p>
+      <div class="cambio-item"><div class="cambio-num">1</div><textarea class="cambio-input" id="cambio1" placeholder="Ej: 50 adultos mayores del barrio La Campiña podrán hacer sus trámites solos en el celular..." data-track></textarea></div>
+      <div class="cambio-item"><div class="cambio-num">2</div><textarea class="cambio-input" id="cambio2" placeholder="Ej: Se reducirán en un 30% las bolsas plásticas en el mercado central de Yopal..." data-track></textarea></div>
+      <div class="cambio-item"><div class="cambio-num">3</div><textarea class="cambio-input" id="cambio3" placeholder="Ej: 3 jóvenes del barrio tendrán empleo y 5 tiendas locales aumentarán sus ventas..." data-track></textarea></div>
+      <div class="field" style="margin-top:10px;">
+        <label>¿Cómo puede su idea sostenerse y crecer en 3 años?</label>
+        <textarea id="sostenibilidad" rows="2" placeholder="¿Qué necesitarían para que en 3 años tenga aún más impacto?" data-track></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- IA -->
+  <div class="card ch-morado">
+    <div class="card-header">
+      <div class="card-icon">🤖</div>
+      <div><div class="card-label">Sección 4 — ChatGPT</div><div class="card-title">Medir y Comunicar el Impacto con IA</div></div>
+    </div>
+    <div class="card-body">
+      <div class="ia-box">
+        <div class="ia-label">📋 Prompt que usaron</div>
+        <div class="ia-prompt">
+          Somos un equipo de grado 10° en Yopal, Casanare. Nuestra idea es: <span class="ph" id="ph-idea">[su idea]</span>. Nuestro impacto principal es: <span class="ph" id="ph-impacto">[su impacto]</span>. Ayúdanos a: 1) estimar cuántas personas podría beneficiar en el primer año, 2) crear una frase de impacto poderosa de máximo 2 líneas.
+        </div>
+        <div class="ia-label">Respuesta de la IA:</div>
+        <textarea class="ia-textarea" id="respuesta_ia" rows="4" placeholder="Escribe aquí lo que les respondió ChatGPT..." data-track></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRASE DE IMPACTO -->
+  <div class="card ch-verde">
+    <div class="card-header">
+      <div class="card-icon">⭐</div>
+      <div><div class="card-label">Sección 5 — Presentación</div><div class="card-title">Nuestra Frase de Impacto</div></div>
+    </div>
+    <div class="card-body">
+      <div class="frase-box">
+        <div class="frase-label">🎤 Construye tu frase para la presentación</div>
+        <div class="frase-row">
+          <span>Nuestra idea beneficia a</span>
+          <input class="frase-input" id="f1" placeholder="¿a quién?" style="width:120px;" data-track/>
+          <span>resolviendo</span>
+          <input class="frase-input" id="f2" placeholder="¿qué problema?" style="width:150px;" data-track/>
+          <span>generando</span>
+          <input class="frase-input" id="f3" placeholder="¿qué impacto?" style="width:150px;" data-track/>
+          <span>en Yopal.</span>
+        </div>
+        <div class="frase-preview" id="frasePreview"></div>
+      </div>
+      <div class="field" style="margin-top:14px;">
+        <label>Reflexión del equipo — Hoy aprendimos que nuestra idea también puede...</label>
+        <textarea id="reflexion" rows="2" placeholder="Completa la frase con el aprendizaje más importante del reto..." data-track></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUARDAR -->
+  <div class="save-section">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;color:var(--verde);">¿LISTOS PARA ENVIAR?</div>
+    <p style="font-size:12px;color:var(--gris);text-align:center;">Al presionar el botón el Mapa de Impacto se guarda en el sistema del programa.</p>
+    <button class="save-btn" id="btnGuardar" onclick="enviarDatos()">ENVIAR MAPA DE IMPACTO 🌱</button>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBMK309PLIJ4HLp5HEP7YtxU8w-_qalWuH4ki8sClZIjMpSgtl472WG4M4Ho97Ddk/exec";
+
+const CAMPOS = ['equipo','lider','fecha','idea_r1','porque_r1',
+                'impacto_social','impacto_ambiental','impacto_economico','impacto_principal',
+                'cambio1','cambio2','cambio3','sostenibilidad',
+                'respuesta_ia','f1','f2','f3','reflexion'];
+
+function updateProgress(){
+  const filled=CAMPOS.filter(id=>{const e=document.getElementById(id);return e&&e.value&&e.value.trim().length>1;}).length;
+  const pct=Math.round((filled/CAMPOS.length)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=`${pct}% completado · ${filled} de ${CAMPOS.length} campos`;
+
+  // Actualizar prompts IA
+  const idea=document.getElementById('idea_r1').value.trim();
+  const impacto=document.getElementById('impacto_principal').value;
+  document.getElementById('ph-idea').textContent=idea||'[su idea]';
+  document.getElementById('ph-impacto').textContent=impacto||'[su impacto principal]';
+
+  // Frase preview
+  const f1=document.getElementById('f1').value.trim();
+  const f2=document.getElementById('f2').value.trim();
+  const f3=document.getElementById('f3').value.trim();
+  const prev=document.getElementById('frasePreview');
+  if(f1||f2||f3){prev.style.display='block';prev.textContent=`"Nuestra idea beneficia a ${f1||'...'} resolviendo ${f2||'...'} generando ${f3||'...'} en Yopal."`;}
+  else prev.style.display='none';
+}
+
+async function enviarDatos(){
+  const equipo=document.getElementById('equipo').value.trim();
+  const lider=document.getElementById('lider').value.trim();
+  if(!equipo||!lider){mostrarToast('⚠️ Completa el nombre del equipo y del líder','error');return;}
+
+  const btn=document.getElementById('btnGuardar');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>Enviando...';
+
+  const datos={modulo:"Reto 2 — Mapa de Impacto",timestamp:new Date().toLocaleString('es-CO'),colegio:"Centro Social"};
+  CAMPOS.forEach(id=>{const e=document.getElementById(id);datos[id]=e?e.value.trim():'';});
+
+  try{
+    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)});
+    btn.innerHTML='✅ ¡Enviado!';
+    btn.style.background='#1B5E20';
+    mostrarToast('✅ ¡Mapa de Impacto enviado! Ya pueden cerrar esta ventana.','success');
+  }catch(err){
+    btn.disabled=false;btn.innerHTML='ENVIAR MAPA DE IMPACTO 🌱';
+    mostrarToast('❌ Error de conexión. Verifica el internet e intenta de nuevo.','error');
+  }
+}
+
+function mostrarToast(msg,tipo='success'){
+  const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${tipo} show`;
+  setTimeout(()=>t.classList.remove('show'),4500);
+}
+
+CAMPOS.forEach(id=>{const e=document.getElementById(id);if(e)e.addEventListener('input',updateProgress);});
+document.getElementById('fecha').value=new Date().toISOString().split('T')[0];
+updateProgress();
+</script>
+</body>
+</html>
